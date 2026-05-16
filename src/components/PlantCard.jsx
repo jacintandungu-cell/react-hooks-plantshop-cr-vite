@@ -1,28 +1,15 @@
-import React, { useState } from "react";
+import React from "react";
 
-// Plant card component - displays plant details with local stock toggle
-function PlantCard({ plant }) {
-  const [inStock, setInStock] = useState(plant.inStock !== false);
-
-  // Toggle stock status locally (non-persisting)
-  const handleStockToggle = () => {
-    setInStock((prev) => !prev);
-  };
-
+export default function PlantCard({ plant, markOutOfStock }) {
   return (
-    <li className="card" data-testid="plant-item">
-      <img src={plant.image} alt={plant.name} />
-      <h4>{plant.name}</h4>
+    <li className="card">
+      <h3>{plant.name}</h3>
       <p>Price: {plant.price}</p>
-      {inStock ? (
-        <button className="primary" onClick={handleStockToggle}>
-          In Stock
-        </button>
+      {plant.outOfStock ? (
+        <span style={{ color: "red" }}>Sold Out</span>
       ) : (
-        <button onClick={handleStockToggle}>Out of Stock</button>
+        <button onClick={() => markOutOfStock(plant.id)}>Mark as Sold Out</button>
       )}
     </li>
   );
 }
-
-export default PlantCard;
