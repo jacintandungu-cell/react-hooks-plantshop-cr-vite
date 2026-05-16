@@ -1,16 +1,15 @@
 import React from "react";
-import NewPlantForm from "./NewPlantForm";
-import PlantList from "./PlantList";
-import Search from "./Search";
+import PlantCard from "./PlantCard";
 
-function PlantPage() {
+// Plant list component - renders all plants as PlantCard components
+function PlantList({ plants }) {
   return (
-    <main>
-      <NewPlantForm />
-      <Search />
-      <PlantList />
-    </main>
+    <ul className="cards">
+      {plants.map((plant) => (
+        <PlantCard key={plant.id} plant={plant} />
+      ))}
+    </ul>
   );
 }
 
-export default PlantPage;
+export default PlantList;

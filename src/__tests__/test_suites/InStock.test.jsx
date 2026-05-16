@@ -11,7 +11,7 @@ describe('3rd Deliverable', () => {
 
     // Get all plant items
     const plantItems = await findAllByTestId('plant-item');
-    expect(plantItems).toHaveLength(basePlants.length);
+    expect(plantItems).toHaveLength(global.basePlants.length);
 
     // Select the first plant item
     const firstPlantItem = plantItems[0];
