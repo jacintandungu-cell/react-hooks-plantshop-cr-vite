@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import PlantCard from "./components/PlantCard.jsx";
+import PlantCard from "./PlantCard.jsx";   
 
 function App() {
   const [plants, setPlants] = useState([]);
