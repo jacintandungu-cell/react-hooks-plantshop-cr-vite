@@ -9,12 +9,7 @@ function NewPlantForm({ onAddPlant }) {
   // Handle form submission - POST new plant and reset form
   const handleSubmit = (e) => {
     e.preventDefault();
-    const newPlant = {
-      name,
-      image,
-      price: parseFloat(price),
-      inStock: true,
-    };
+    const newPlant = { name, image, price };
     onAddPlant(newPlant);
     setName("");
     setImage("");

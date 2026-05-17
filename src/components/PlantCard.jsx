@@ -10,7 +10,7 @@ function PlantCard({ plant }) {
   };
 
   return (
-    <li className="card">
+    <li className="card" data-testid="plant-item">
       {plant.image && <img src={plant.image} alt={plant.name} />}
       <h3>{plant.name}</h3>
       <p>Price: ${plant.price}</p>
