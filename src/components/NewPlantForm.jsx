@@ -12,7 +12,8 @@ function NewPlantForm({ onAddPlant }) {
     const newPlant = {
       name,
       image,
-      price,
+      price: parseFloat(price),
+      inStock: true,
     };
     onAddPlant(newPlant);
     setName("");

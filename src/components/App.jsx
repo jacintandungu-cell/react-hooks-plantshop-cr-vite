@@ -1,93 +1,31 @@
 import React, { useState, useEffect } from "react";
-import PlantCard from "./PlantCard.jsx";   
+import PlantPage from "./PlantPage.jsx";
 
+// Main App component - manages plant state and fetch operations
 function App() {
   const [plants, setPlants] = useState([]);
-  const [searchTerm, setSearchTerm] = useState("");
-  const [newPlantName, setNewPlantName] = useState("");
-  const [newPlantPrice, setNewPlantPrice] = useState("");
 
-  // Fetch plants on startup
+  // Fetch all plants on component mount
   useEffect(() => {
-    fetch("http://localhost:3001/plants")
+    fetch("http://localhost:6001/plants")
       .then((res) => res.json())
-      .then((data) => setPlants(data))
-      .catch((err) => console.error("Error fetching plants:", err));
+      .then((data) => setPlants(data));
   }, []);
 
-  // Add new plant
-  const handleAddPlant = (e) => {
-    e.preventDefault();
-    const newPlant = {
-      id: plants.length + 1,
-      name: newPlantName,
-      price: newPlantPrice,
-      outOfStock: false,
-    };
-    setPlants([...plants, newPlant]);
-    setNewPlantName("");
-    setNewPlantPrice("");
+  // Handle adding a new plant via POST request to backend
+  const handleAddPlant = (newPlant) => {
+    fetch("http://localhost:6001/plants", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(newPlant),
+    })
+      .then((res) => res.json())
+      .then((savedPlant) => {
+        setPlants((prev) => [...prev, savedPlant]);
+      });
   };
 
-  // Mark plant as sold out (non-persisting)
-  const markOutOfStock = (id) => {
-    setPlants((prev) =>
-      prev.map((plant) =>
-        plant.id === id ? { ...plant, outOfStock: true } : plant
-      )
-    );
-  };
-
-  // Filter plants by search term
-  const filteredPlants = plants.filter((plant) =>
-    plant.name.toLowerCase().includes(searchTerm.toLowerCase())
-  );
-
-  return (
-    <div className="app">
-      <header>
-        <h1>
-          Plantsy <span className="logo" role="img">🌱</span>
-        </h1>
-      </header>
-
-      {/* Search input */}
-      <input
-        type="text"
-        placeholder="Type a name to search..."
-        value={searchTerm}
-        onChange={(e) => setSearchTerm(e.target.value)}
-      />
-
-      {/* Add plant form */}
-      <form onSubmit={handleAddPlant}>
-        <input
-          type="text"
-          placeholder="Plant name"
-          value={newPlantName}
-          onChange={(e) => setNewPlantName(e.target.value)}
-        />
-        <input
-          type="text"
-          placeholder="Plant price"
-          value={newPlantPrice}
-          onChange={(e) => setNewPlantPrice(e.target.value)}
-        />
-        <button type="submit">Add Plant</button>
-      </form>
-
-      {/* Plant list */}
-      <ul className="cards">
-        {filteredPlants.map((plant) => (
-          <PlantCard
-            key={plant.id}
-            plant={plant}
-            markOutOfStock={markOutOfStock}
-          />
-        ))}
-      </ul>
-    </div>
-  );
+  return <PlantPage plants={plants} onAddPlant={handleAddPlant} />;
 }
 
 export default App;

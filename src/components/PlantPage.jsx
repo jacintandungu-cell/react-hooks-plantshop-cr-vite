@@ -1,15 +1,26 @@
-import React from "react";
-import PlantCard from "./PlantCard";
+import React, { useState } from "react";
+import NewPlantForm from "./NewPlantForm.jsx";
+import Search from "./Search.jsx";
+import PlantList from "./PlantList.jsx";
+import Header from "./Header.jsx";
 
-// Plant list component - renders all plants as PlantCard components
-function PlantList({ plants }) {
+// PlantPage component - manages search state and filters plants
+function PlantPage({ plants, onAddPlant }) {
+  const [searchQuery, setSearchQuery] = useState("");
+
+  // Filter plants based on search query
+  const filteredPlants = plants.filter((plant) =>
+    plant.name.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
   return (
-    <ul className="cards">
-      {plants.map((plant) => (
-        <PlantCard key={plant.id} plant={plant} />
-      ))}
-    </ul>
+    <div className="app">
+      <Header />
+      <NewPlantForm onAddPlant={onAddPlant} />
+      <Search searchQuery={searchQuery} onSearchChange={setSearchQuery} />
+      <PlantList plants={filteredPlants} />
+    </div>
   );
 }
 
-export default PlantList;
+export default PlantPage;
